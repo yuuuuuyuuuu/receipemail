@@ -16,7 +16,7 @@ var RecordSchema =  new Schema({
 	favorite_category_3:{type:String}
 });
 
-var D = true;
+var D = true; // Debug
 
 function UserDbModel()
 {
