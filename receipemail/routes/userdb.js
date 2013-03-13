@@ -8,7 +8,7 @@ exports.register = function(req, res){
   // DB Model
   var userDbModel = new UserDbModel();
   userDbModel.connect();
-  userDbModel.register();
+  userDbModel.register(req.body.userId, req.body.registrationId);
 
 
   // Post Data

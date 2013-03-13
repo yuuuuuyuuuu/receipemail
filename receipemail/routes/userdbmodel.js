@@ -2,6 +2,7 @@ module.exports = UserDbModel;
 
 var dbUrl = "mongodb://localhost/userdb";
 var mongoose = require('mongoose');
+var moment = require('moment');
 var db = null;
 
 var Schema = mongoose.Schema;
@@ -17,10 +18,11 @@ var RecordSchema =  new Schema({
 });
 
 var D = true; // Debug
+var TAG = "UserDbModel::";
 
 function UserDbModel()
 {
-	if(D) console.log("UserDbControl constructor");
+	if(D) console.log(TAG +  "constructor");
 }
 
 UserDbModel.prototype.initDb = function()
@@ -31,17 +33,29 @@ UserDbModel.prototype.initDb = function()
 
 UserDbModel.prototype.connect =  function()
 {
-	if(D) console.log("UserDbControl _connect");
+	if(D) console.log(TAG + "connect");
 	db = mongoose.connect(dbUrl);
 }
 
-UserDbModel.prototype.register = function()
+UserDbModel.prototype.register = function(userId, registrationId)
 {
+	if(D) console.log(TAG + "register");
+	if(D) console.log(TAG + "userId=" + userId);
+	if(D) console.log(TAG + "registrationId=" + registrationId);
+
 	var Record = db.model("Record", RecordSchema);
 	var record = new Record();
 
-	record.user_id = "test_userid";
-	record.registration_id = "test_registration_id";
+	// set data
+	record.user_id = userId;
+	record.registration_id = registrationId;
+	record.db_registration_date = moment();
+	record.user_registration_date = moment();
+	record.email_time = moment("Dec 25, 1995");
+	record.favorite_category_1 = "f1";
+	record.favorite_category_2 = "f2";
+	record.favorite_category_3 = "f3";
+
 
 	record.save(function(err) {
   		if (err) { console.log(err); }
