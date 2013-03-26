@@ -61,3 +61,9 @@ UserDbModel.prototype.register = function(userId, registrationId)
   		if (err) { console.log(err); }
 	});
 }
+
+UserDbModel.prototype.getAllRegistrationIds = function()
+{
+	if(D) console.log(TAG + "getAllRegistrationIds called");
+	
+}
