@@ -65,5 +65,10 @@ UserDbModel.prototype.register = function(userId, registrationId)
 UserDbModel.prototype.getAllRegistrationIds = function()
 {
 	if(D) console.log(TAG + "getAllRegistrationIds called");
-	
+
+	var Record = db.model("Record", RecordSchema);
+	Record.find({}, function(err, docs){
+		if(D) console.log("find callback");
+		if(D) console.log(docs);
+	});
 }

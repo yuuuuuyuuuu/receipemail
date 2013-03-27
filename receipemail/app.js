@@ -8,8 +8,7 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , userdb = require('./routes/userdb')
-  , gcmControl;
+  , userdb = require('./routes/userdb');
 
 var app = express();
 
@@ -33,7 +32,7 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 app.post('/register', userdb.register);
-app.post('/send',gcmControl.send);
+app.post('/send',userdb.send);
 //app.get('/register', userdb.register);
 
 http.createServer(app).listen(app.get('port'), function(){

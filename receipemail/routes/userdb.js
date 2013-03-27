@@ -1,7 +1,9 @@
 
 var UserDbModel = require('../routes/userdbmodel');
+var GCMControl = require('../routes/gcmcontrol');
 
 var D = true;  // Debug Flag
+var TAG = "UserDb::";
 
 exports.register = function(req, res){
 
@@ -18,3 +20,17 @@ exports.register = function(req, res){
   //res.send("respond with a resource");
 
 };
+
+exports.send = function(req, res){
+
+	var msg = req.body.message;
+
+	if(D) console.log(TAG + "send called");
+	if(D) console.log("Msg:" + msg);
+	
+	var gcmControl = new GCMControl();
+	gcmControl.init();
+	gcmControl.send(msg);
+
+	res.redirect("/");
+}
