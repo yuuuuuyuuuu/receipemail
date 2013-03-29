@@ -62,13 +62,18 @@ UserDbModel.prototype.register = function(userId, registrationId)
 	});
 }
 
-UserDbModel.prototype.getAllRegistrationIds = function()
+UserDbModel.prototype.getAllRegistrationIds = function(onDbSearchResultReceived_Callback)
 {
 	if(D) console.log(TAG + "getAllRegistrationIds called");
 
 	var Record = db.model("Record", RecordSchema);
+
+	/*
 	Record.find({}, function(err, docs){
 		if(D) console.log("find callback");
 		if(D) console.log(docs);
 	});
+    */
+	Record.find({}, onDbSearchResultReceived_Callback);
+
 }

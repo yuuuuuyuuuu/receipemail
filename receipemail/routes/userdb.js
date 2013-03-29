@@ -34,3 +34,9 @@ exports.send = function(req, res){
 
 	res.redirect("/");
 }
+
+function onDbResultCallback(err, docs)
+{
+	if(D) console.log(TAG + "find callback");
+	if(D) console.log(docs);
+}
