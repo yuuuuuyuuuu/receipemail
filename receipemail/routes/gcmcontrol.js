@@ -40,9 +40,9 @@ GCMControl.prototype.send = function(message_string)
   	// set message
   	message = new gcm.Message();
   	message.addData('notification_title', "test_no_title");
-  	message.addData('info_tilte', "test_title");
+  	message.addData('info_title', "test_title");
   	message.addData('info_content', "test_content");
-  	message.addData('info_url', "url_data");
+  	message.addData('info_url', "http://cookpad.com/recipe/2129479");
 }
 
 
