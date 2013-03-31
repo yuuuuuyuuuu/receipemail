@@ -10,7 +10,8 @@ exports.register = function(req, res){
   // DB Model
   var userDbModel = new UserDbModel();
   userDbModel.connect();
-  userDbModel.register(req.body.userId, req.body.registrationId);
+
+  userDbModel.register(req.body.registrationId);
 
 
   // Post Data
@@ -33,10 +34,4 @@ exports.send = function(req, res){
 	gcmControl.send(msg);
 
 	res.redirect("/");
-}
-
-function onDbResultCallback(err, docs)
-{
-	if(D) console.log(TAG + "find callback");
-	if(D) console.log(docs);
 }

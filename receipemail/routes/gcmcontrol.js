@@ -8,6 +8,11 @@ var sender = null;
 var registrationIds = [];
 var apiKey = "AIzaSyDSF73joTmX_DCOC8z9qq9xlAzEStt69pg";
 
+var DATA_NAME_NOTIFICATION_TITLE = "notification_title";
+var DATA_NAME_INFO_TITLE = "info_title";
+var DATA_NAME_INFO_CONTENT = "info_content";
+var DATA_NAME_INFO_URL = "info_url";
+
 var D = true; // Debug
 var TAG = "GCMControl::";
 
@@ -20,7 +25,6 @@ GCMControl.prototype.init = function()
 {
 	message = new gcm.Message();
 	sender = new gcm.Sender(apiKey);
-
 }
 
 GCMControl.prototype.getRegistrationData = function()
@@ -39,10 +43,10 @@ GCMControl.prototype.send = function(message_string)
 
   	// set message
   	message = new gcm.Message();
-  	message.addData('notification_title', "test_no_title");
-  	message.addData('info_title', "test_title");
-  	message.addData('info_content', "test_content");
-  	message.addData('info_url', "http://cookpad.com/recipe/2129479");
+  	message.addData(DATA_NAME_NOTIFICATION_TITLE, "test_no_title");
+  	message.addData(DATA_NAME_INFO_TITLE, "test_title");
+  	message.addData(DATA_NAME_INFO_CONTENT, "test_content");
+  	message.addData(DATA_NAME_INFO_URL, "http://cookpad.com/recipe/2129479");
 }
 
 
