@@ -1,9 +1,29 @@
+// This main.js is initial point of this application
+// main.js creates objects needed for furture process in this application
 
-var UserDbModel = require('../routes/userdbmodel');
+////////////////////////////////////////////////
+// AppMain Class
+module.exports = AppMain;
+
 var GCMControl = require('../routes/gcmcontrol');
+var UserDbModel = require('../routes/userdbmodel');
 
-var D = true;  // Debug Flag
-var TAG = "UserDb::";
+// Debug
+var D = true; // Debug
+var TAG = "AppMain::";
+
+function AppMain()
+{
+	if(D) console.log(TAG +  "constructor");
+};
+
+AppMain.prototype._init = function()
+{
+
+};
+
+////////////////////////////////////////////////
+// Access Handling
 
 exports.register = function(req, res){
 
@@ -38,4 +58,4 @@ exports.send = function(req, res){
 	gcmControl.send(title, content, url)
 
 	res.redirect("/");
-}
+};

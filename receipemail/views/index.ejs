@@ -8,18 +8,25 @@
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
     <br/>
+
+    
     <div>
-    	
+
+    	<!-- Registration TEst -->
     	<form method="post" action="/register">
-    		<p>Post Data Test</p>
+    		<p style="color:green">Post Data Test</p>
     		<p>User ID<input type="text" name="userId"></input></p>
         <p>Registration ID<input type="text" name="registrationId"></input></p>
     		<input type="submit" value="send"></input>
     	</form>
-      <br/>
+      <hr>
+
+      <!-- Data Delivery TEst -->
       <form method="post" action="/send">
-        <p>Send Data</p>
-        <p>Message<input type="text" name="message"></input></p>
+        <p style="color:blue">Data Delivery Test</p>
+        <p>INFO_TITLE<input type="text" name="info_title" value="栄養まんてん八宝菜！"></input></p>
+        <p>INFO_CONTENT<input type="text" name="info_content" value="レシピメール"></input></p>
+        <p>INFO_URL<input type="text" name="info_url" value="http://cookpad.com/recipe/2129479"></input></p>
         <input type="submit" value="send"></input>
       </form>
 

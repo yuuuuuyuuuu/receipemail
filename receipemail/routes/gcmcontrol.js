@@ -12,6 +12,7 @@ var DATA_NAME_NOTIFICATION_TITLE = "notification_title";
 var DATA_NAME_INFO_TITLE = "info_title";
 var DATA_NAME_INFO_CONTENT = "info_content";
 var DATA_NAME_INFO_URL = "info_url";
+var STRING_NOTIFICATION_TITLE = "今晩のレシピをお届け！";
 
 var D = true; // Debug
 var TAG = "GCMControl::";
@@ -32,8 +33,10 @@ GCMControl.prototype.getRegistrationData = function()
 	
 }
 
-GCMControl.prototype.send = function(message_string)
+GCMControl.prototype.send = function(info_title, info_content, info_url)
 {
+	if(D) console.log(TAG + "send called");
+
 	// DB Model
   	var userDbModel = new UserDbModel();
   	userDbModel.connect();
@@ -43,10 +46,10 @@ GCMControl.prototype.send = function(message_string)
 
   	// set message
   	message = new gcm.Message();
-  	message.addData(DATA_NAME_NOTIFICATION_TITLE, "test_no_title");
-  	message.addData(DATA_NAME_INFO_TITLE, "test_title");
-  	message.addData(DATA_NAME_INFO_CONTENT, "test_content");
-  	message.addData(DATA_NAME_INFO_URL, "http://cookpad.com/recipe/2129479");
+  	message.addData(DATA_NAME_NOTIFICATION_TITLE, STRING_NOTIFICATION_TITLE);
+  	message.addData(DATA_NAME_INFO_TITLE, info_title);
+  	message.addData(DATA_NAME_INFO_CONTENT, info_content);
+  	message.addData(DATA_NAME_INFO_URL, info_url);
 }
 
 

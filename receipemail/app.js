@@ -8,7 +8,9 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , userdb = require('./routes/userdb');
+  , userdb = require('./routes/userdb')
+  , CronControl = require('./routes/croncontrol')
+  , appMain = require('./routes/appmain');
 
 var app = express();
 
@@ -32,9 +34,13 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 app.post('/register', userdb.register);
+// app.post('/register', appMain.register);
 app.post('/send',userdb.send);
-//app.get('/register', userdb.register);
+//app.post('/send',appMain.send);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+// Cron control test
+var cronControl = new CronControl();
