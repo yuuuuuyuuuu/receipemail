@@ -3,43 +3,34 @@
 
 ////////////////////////////////////////////////
 // AppMain Class
-module.exports = AppMain;
-
 var GCMControl = require('../routes/gcmcontrol');
 var UserDbModel = require('../routes/userdbmodel');
 
-// Debug
-var D = true; // Debug
-var TAG = "AppMain::";
+var gcmCOntrol = null;
+var userDbModel = null;
 
-function AppMain()
-{
-	if(D) console.log(TAG +  "constructor");
-};
-
-AppMain.prototype._init = function()
-{
-
-};
+var D = true;
+var TAG = "appMain::";
 
 ////////////////////////////////////////////////
 // Access Handling
+exports.index = function(req, res){
+
+	_init();
+	res.render('index', { title: 'Express' });
+};
 
 exports.register = function(req, res){
 
-  // DB Model
-  var userDbModel = new UserDbModel();
-  userDbModel.connect();
+	if(D) console.log(TAG + "register called");
 
-  userDbModel.register(req.body.registrationId);
+	// DB Model
+    var userDbModel = new UserDbModel();
+    userDbModel.connect();
 
+    userDbModel.register(req.body.registrationId);
 
-  // Post Data
-  if(D) console.log(req.body.postValue1);
-
-  res.redirect("/");
-  //res.send("respond with a resource");
-
+	res.redirect("/");
 };
 
 exports.send = function(req, res){
@@ -52,10 +43,16 @@ exports.send = function(req, res){
 	if(D) console.log("info_title:" + title);
 	if(D) console.log("info_content:" + content);
 	if(D) console.log("info_url:" + url);
-	
+
 	var gcmControl = new GCMControl();
 	gcmControl.init();
-	gcmControl.send(title, content, url)
+	gcmControl.send(title, content, url);
 
+	// res.render('index', { title: 'Express' });
 	res.redirect("/");
 };
+
+function _init()
+{
+	if(D) console.log(TAG + "_init");
+}
