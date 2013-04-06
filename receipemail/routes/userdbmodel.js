@@ -35,7 +35,7 @@ UserDbModel.prototype.initDb = function()
 UserDbModel.prototype.connect =  function()
 {
 	if(D) console.log(TAG + "connect");
-	if(null == db) db = mongoose.connect(dbUrl);
+	if(null === db) db = mongoose.connect(dbUrl);
 };
 
 UserDbModel.prototype.register = function(registrationId)

@@ -5,6 +5,9 @@
 // AppMain Class
 var GCMControl = require('../routes/gcmcontrol');
 var UserDbModel = require('../routes/userdbmodel');
+var CronControl = require('../routes/croncontrol');
+var Time = require('time');
+var time = null;
 
 var gcmCOntrol = null;
 var userDbModel = null;
@@ -52,7 +55,32 @@ exports.send = function(req, res){
 	res.redirect("/");
 };
 
+function sendGCMMessage()
+{
+	if(D) console.log(TAG + "sendGCMMessage called");
+	var title = "title_test";
+	var content = "content_title";
+	var url = "url_test";
+	var gcmControl = new GCMControl();
+	gcmControl.init();
+	gcmControl.send(title, content, url);
+}
+
 function _init()
 {
 	if(D) console.log(TAG + "_init");
 }
+
+exports.startCron = function()
+{
+	console.log(TAG + "startCron called");
+
+	time = new Time.Date();
+	console.log("time.toString():" + time.toString());
+
+	var cronSchedule = "10 9 * * *";  // 9 a.m. everyday
+	// var cronSchedule = "* * * * * *";  // every seconds
+	var cronControl = new CronControl();
+	//cronControl.setSchedule(cronSchedule);
+	cronControl.startJob(sendGCMMessage);
+};

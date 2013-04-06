@@ -1,7 +1,7 @@
 module.exports = CronControl;
 
 var cronJob = require('cron').CronJob;
-var cronTime = "* * * * * *";
+var cronTime = "0 30 9 * * *"; // default
 var job = null;
 
 var D = true; // Debug
@@ -11,29 +11,25 @@ var TAG = "CronControl::";
 function CronControl()
 {
 	if(D) console.log(TAG +  "constructor");
+}
 
-	_init();
+CronControl.prototype.setSchedule = function(newCronTime)
+{
+	cronTime = newCronTime;
 };
 
-function _init()
+CronControl.prototype.startJob = function(onTickCallback)
 {
+	if(D) console.log(TAG + "startJob called");
+
 	job = new cronJob({
 		cronTime: cronTime,
-		onTick: function(){
-			if(D) console.log(TAG + "onTick");
-		},
+		onTick: onTickCallback,
 		onComplete: function(){
 			if(D) console.log(TAG + "onComplete");
 		},
-		start: false,
-		timeZone: "Japan/Tokyo"
+		start: true
 	});
 
 	job.start();
-};
-
-
-CronControl.prototype.initDb = function()
-{
-	
 };
