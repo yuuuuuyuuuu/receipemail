@@ -5,6 +5,7 @@
 // AppMain Class
 var GCMControl = require('../routes/gcmcontrol');
 var UserDbModel = require('../routes/userdbmodel');
+var RecipeDbModel = require('../routes/recipedbmodel');
 var CronControl = require('../routes/croncontrol');
 var Time = require('time');
 var time = null;
@@ -56,7 +57,17 @@ exports.distributeRecipe = function(req, res){
 };
 
 exports.registerRecipe = function(req, res){
+	if(D) console.log(TAG + "registerRecipe called");
 
+	var recipe_url = req.body.recipe_url;
+	if(D) console.log("recipe_url:" + recipe_url);
+
+	var recipeDbModel = new RecipeDbModel();
+	recipeDbModel.connect();
+
+	recipeDbModel.register(recipe_url);
+
+	res.redirect("/");
 };
 
 function sendGCMMessage()
