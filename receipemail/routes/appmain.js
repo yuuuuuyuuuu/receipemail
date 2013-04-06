@@ -23,7 +23,7 @@ exports.index = function(req, res){
 	res.render('index', { title: 'Express' });
 };
 
-exports.register = function(req, res){
+exports.registerUser = function(req, res){
 
 	if(D) console.log(TAG + "register called");
 
@@ -36,7 +36,7 @@ exports.register = function(req, res){
 	res.redirect("/");
 };
 
-exports.send = function(req, res){
+exports.distributeRecipe = function(req, res){
 
 	var title = req.body.info_title;
 	var content = req.body.info_content;
@@ -53,6 +53,10 @@ exports.send = function(req, res){
 
 	// res.render('index', { title: 'Express' });
 	res.redirect("/");
+};
+
+exports.registerRecipe = function(req, res){
+
 };
 
 function sendGCMMessage()

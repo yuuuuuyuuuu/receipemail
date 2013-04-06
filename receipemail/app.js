@@ -29,8 +29,9 @@ app.configure('development', function(){
 });
 
 app.get('/', appMain.index);
-app.post('/register', appMain.register);
-app.post('/send',appMain.send);
+app.post('/registerUser', appMain.registerUser);
+app.post('/distributeRecipe',appMain.distributeRecipe);
+app.post('/registerRecipe',appMain.registerRecipe);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
