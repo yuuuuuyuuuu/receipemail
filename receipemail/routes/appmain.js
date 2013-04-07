@@ -13,6 +13,8 @@ var time = null;
 var gcmCOntrol = null;
 var userDbModel = null;
 
+var recipeIndex = 0;
+
 var D = true;
 var TAG = "appMain::";
 
@@ -56,19 +58,63 @@ exports.distributeRecipe = function(req, res){
 	res.redirect("/");
 };
 
+exports.distributeDbRecipe = function(req, res){
+	if(D) console.log(TAG + "distributeDbRecipe called");
+
+	var recipeDbModel = new RecipeDbModel();
+	recipeDbModel.connect();
+	recipeDbModel.getNextRecipe(onRecipeSearchResult);
+
+	res.redirect("/");
+};
+
 exports.registerRecipe = function(req, res){
 	if(D) console.log(TAG + "registerRecipe called");
 
 	var recipe_url = req.body.recipe_url;
+	var recipe_summary = req.body.recipe_summary;
 	if(D) console.log("recipe_url:" + recipe_url);
+	if(D) console.log("recipe_summary:" + recipe_summary);
 
 	var recipeDbModel = new RecipeDbModel();
 	recipeDbModel.connect();
 
-	recipeDbModel.register(recipe_url);
+	recipeDbModel.register(recipe_url, recipe_summary);
 
 	res.redirect("/");
 };
+
+function onRecipeSearchResult(err, docs)
+{
+	if(D) console.log(TAG + "onRecipeSearchResult called");
+	if(D) console.log("docs:" + docs);
+
+	var recipeDataLength = docs.length;
+	if(D) console.log("RecipeDataLength:" + recipeDataLength);
+	if(0 === recipeDataLength)
+	{
+		console.log("Delivery canceled since no data to send found");
+		return;
+	}
+
+	// send data
+	var nextRecipe = docs[recipeIndex];
+	var nextRecipeUrl = nextRecipe.recipe_url;
+	var nextRecipeSummary = nextRecipe.recipe_summary;
+
+	if(D) console.log("recipeIndex:" + recipeIndex);
+	if(D) console.log("nextRecipeUrl:" + nextRecipeUrl);
+	if(D) console.log("nextRecipeSummary:" + nextRecipeSummary);
+
+	// update
+	recipeIndex++;
+	if(recipeIndex == recipeDataLength) 
+	{
+		if(D) console.log("Reset recipeIndex");
+		recipeIndex = 0;
+	}
+
+}
 
 function sendGCMMessage()
 {

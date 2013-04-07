@@ -29,6 +29,7 @@ app.configure('development', function(){
 });
 
 app.get('/', appMain.index);
+app.get('/distributeDbRecipe', appMain.distributeDbRecipe);
 app.post('/registerUser', appMain.registerUser);
 app.post('/distributeRecipe',appMain.distributeRecipe);
 app.post('/registerRecipe',appMain.registerRecipe);
