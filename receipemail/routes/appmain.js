@@ -12,8 +12,11 @@ var time = null;
 
 var gcmCOntrol = null;
 var userDbModel = null;
+var recipeDbModel = null;
 
 var recipeIndex = 0;
+
+var STRING_RECIPE_CONTENT = "レシピメール";
 
 var D = true;
 var TAG = "appMain::";
@@ -31,9 +34,11 @@ exports.registerUser = function(req, res){
 	if(D) console.log(TAG + "register called");
 
 	// DB Model
-    var userDbModel = new UserDbModel();
-    userDbModel.connect();
-
+	if(null === userDbModel)
+	{
+		userDbModel = new UserDbModel();
+		userDbModel.connect();
+	}
     userDbModel.register(req.body.registrationId);
 
 	res.redirect("/");
@@ -50,8 +55,12 @@ exports.distributeRecipe = function(req, res){
 	if(D) console.log("info_content:" + content);
 	if(D) console.log("info_url:" + url);
 
-	var gcmControl = new GCMControl();
-	gcmControl.init();
+	if(null === gcmControl)
+	{
+		gcmControl = new GCMControl();
+		gcmControl.init();
+    }
+
 	gcmControl.send(title, content, url);
 
 	// res.render('index', { title: 'Express' });
@@ -61,7 +70,7 @@ exports.distributeRecipe = function(req, res){
 exports.distributeDbRecipe = function(req, res){
 	if(D) console.log(TAG + "distributeDbRecipe called");
 
-	var recipeDbModel = new RecipeDbModel();
+	recipeDbModel = new RecipeDbModel();
 	recipeDbModel.connect();
 	recipeDbModel.getNextRecipe(onRecipeSearchResult);
 
@@ -89,6 +98,9 @@ function onRecipeSearchResult(err, docs)
 	if(D) console.log(TAG + "onRecipeSearchResult called");
 	if(D) console.log("docs:" + docs);
 
+	// Disconnect DB
+	// recipeDbModel.disconnect();
+
 	var recipeDataLength = docs.length;
 	if(D) console.log("RecipeDataLength:" + recipeDataLength);
 	if(0 === recipeDataLength)
@@ -106,9 +118,20 @@ function onRecipeSearchResult(err, docs)
 	if(D) console.log("nextRecipeUrl:" + nextRecipeUrl);
 	if(D) console.log("nextRecipeSummary:" + nextRecipeSummary);
 
+	if(undefined === nextRecipeUrl
+		|| undefined === nextRecipeSummary)
+	{
+		if(D) console.log("Stop sending since undefined param found");
+	}
+	else
+	{
+		// send message
+		sendGCMMessage(nextRecipeSummary, STRING_RECIPE_CONTENT, nextRecipeUrl);
+	}
+
 	// update
 	recipeIndex++;
-	if(recipeIndex == recipeDataLength) 
+	if(recipeIndex == recipeDataLength)
 	{
 		if(D) console.log("Reset recipeIndex");
 		recipeIndex = 0;
@@ -116,15 +139,16 @@ function onRecipeSearchResult(err, docs)
 
 }
 
-function sendGCMMessage()
+function sendGCMMessage(title_string, content_string, url_string)
 {
 	if(D) console.log(TAG + "sendGCMMessage called");
-	var title = "title_test";
-	var content = "content_title";
-	var url = "url_test";
+	if(D) console.log("title_string:" + title_string);
+	if(D) console.log("content_string:" + content_string);
+	if(D) console.log("url_string:" + url_string);
+
 	var gcmControl = new GCMControl();
 	gcmControl.init();
-	gcmControl.send(title, content, url);
+	gcmControl.send(title_string, content_string, url_string);
 }
 
 function _init()

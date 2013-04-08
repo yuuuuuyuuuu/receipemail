@@ -14,6 +14,8 @@ var DATA_NAME_INFO_CONTENT = "info_content";
 var DATA_NAME_INFO_URL = "info_url";
 var STRING_NOTIFICATION_TITLE = "今晩のレシピをお届け！";
 
+var userDbModel = null;
+
 var D = true; // Debug
 var TAG = "GCMControl::";
 
@@ -31,14 +33,14 @@ GCMControl.prototype.init = function()
 GCMControl.prototype.getRegistrationData = function()
 {
 	
-}
+};
 
 GCMControl.prototype.send = function(info_title, info_content, info_url)
 {
 	if(D) console.log(TAG + "send called");
 
 	// DB Model
-  	var userDbModel = new UserDbModel();
+  	userDbModel = new UserDbModel();
   	userDbModel.connect();
 
   	// Actual sending is executed inside callback function
@@ -50,13 +52,15 @@ GCMControl.prototype.send = function(info_title, info_content, info_url)
   	message.addData(DATA_NAME_INFO_TITLE, info_title);
   	message.addData(DATA_NAME_INFO_CONTENT, info_content);
   	message.addData(DATA_NAME_INFO_URL, info_url);
-}
+};
 
 
 function onDbResultCallback(err, docs)
 {
 	if(D) console.log(TAG + "find callback");
 	if(D) console.log(docs);
+
+	userDbModel.disconnect();
 
 	// Extract registration id
 	var dataLength = docs.length;

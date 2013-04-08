@@ -35,7 +35,16 @@ UserDbModel.prototype.initDb = function()
 UserDbModel.prototype.connect =  function()
 {
 	if(D) console.log(TAG + "connect");
-	if(null === db) db = mongoose.connect(dbUrl);
+	if(D) console.log(TAG + "new connection created");
+	//db = mongoose.connect(dbUrl);
+	db = mongoose.createConnection(dbUrl);
+	
+};
+
+UserDbModel.prototype.disconnect =  function()
+{
+	if(D) console.log(TAG + "disconnect called");
+	mongoose.disconnect();
 };
 
 UserDbModel.prototype.register = function(registrationId)
@@ -76,6 +85,7 @@ function onDbExistenceCheckCallback(err, docs)
 {
 	if(D) console.log(TAG + "onDbExistenceCheckCallback called");
 	if(D) console.log(docs);
+
 
 	var foundDataLength = docs.length;
 	if(D) console.log(TAG + "FoundDataLength:" + foundDataLength);

@@ -32,7 +32,16 @@ RecipeDbModel.prototype.initDb = function()
 RecipeDbModel.prototype.connect =  function()
 {
 	if(D) console.log(TAG + "connect");
-	if(null === db) db = mongoose.connect(dbUrl);
+	if(D) console.log(TAG + "new connection created");
+	// db = mongoose.connect(dbUrl);
+	db = mongoose.createConnection(dbUrl);
+
+};
+
+RecipeDbModel.prototype.disconnect =  function()
+{
+	if(D) console.log(TAG + "disconnect called");
+	mongoose.disconnect();
 };
 
 RecipeDbModel.prototype.register = function(recipeUrl, recipeSummary)
@@ -55,10 +64,9 @@ RecipeDbModel.prototype.register = function(recipeUrl, recipeSummary)
 RecipeDbModel.prototype.getNextRecipe = function(onRecipeSearchResultCallback)
 {
 	if(D) console.log(TAG + "getNextRecipe called");
-
+	if(D) console.log("db:" + db);
 	var recipe = db.model("Recipe", RecordSchema);
 	recipe.find({}, onRecipeSearchResultCallback);
-
 };
 
 function isAlreadyRegisterd(recipeUrl)
