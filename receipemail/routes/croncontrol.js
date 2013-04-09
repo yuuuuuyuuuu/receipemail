@@ -33,3 +33,11 @@ CronControl.prototype.startJob = function(onTickCallback)
 
 	job.start();
 };
+
+CronControl.prototype.stopJob = function()
+{
+	if(D) console.log(TAG + "stopJob called");
+
+	if(null === job) return;
+	job.stop();
+};

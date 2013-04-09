@@ -38,6 +38,17 @@ GCMControl.prototype.getRegistrationData = function()
 GCMControl.prototype.send = function(info_title, info_content, info_url)
 {
 	if(D) console.log(TAG + "send called");
+	if(D) console.log("info_title:" + info_title);
+	if(D) console.log("info_content:" + info_content);
+	if(D) console.log("info_url:" + info_url);
+
+	if(undefined === info_title
+		|| undefined === info_content
+		|| undefined === info_url)
+	{
+		if(D) console.log("Stopping delivery since undefined param found.");
+		return;
+ 	}
 
 	// DB Model
   	userDbModel = new UserDbModel();

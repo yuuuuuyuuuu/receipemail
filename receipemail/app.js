@@ -33,6 +33,7 @@ app.get('/distributeDbRecipe', appMain.distributeDbRecipe);
 app.post('/registerUser', appMain.registerUser);
 app.post('/distributeRecipe',appMain.distributeRecipe);
 app.post('/registerRecipe',appMain.registerRecipe);
+app.post('/setCronSchedule',appMain.setCronSchedule);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

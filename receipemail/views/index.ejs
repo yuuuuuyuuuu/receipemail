@@ -45,6 +45,15 @@
         <p>Receipe Summary<input type="text" name="recipe_summary" value="美味しい八宝菜！"></input></p>
         <input type="submit" value="send"></input>
       </form>
+      <hr>
+      
+      <!-- Cron Schedule Control -->
+      <form method="post" action="/setCronSchedule">
+        <p style="color:red">Cron Schedule Control</p>
+        <p>Cron Format String<input type="text" name="cron_schedule" value="* * * * *"></input></p>
+        <input type="submit" value="set"></input>
+      </form>
+
 
     </div>
   </body>

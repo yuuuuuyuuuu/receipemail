@@ -13,6 +13,7 @@ var time = null;
 var gcmCOntrol = null;
 var userDbModel = null;
 var recipeDbModel = null;
+var cronControl = null;
 
 var recipeIndex = 0;
 
@@ -70,9 +71,7 @@ exports.distributeRecipe = function(req, res){
 exports.distributeDbRecipe = function(req, res){
 	if(D) console.log(TAG + "distributeDbRecipe called");
 
-	recipeDbModel = new RecipeDbModel();
-	recipeDbModel.connect();
-	recipeDbModel.getNextRecipe(onRecipeSearchResult);
+	sendDbRecipe();
 
 	res.redirect("/");
 };
@@ -91,6 +90,26 @@ exports.registerRecipe = function(req, res){
 	recipeDbModel.register(recipe_url, recipe_summary);
 
 	res.redirect("/");
+};
+
+exports.setCronSchedule = function(req, res){
+	if(D) console.log(TAG + "setCronSchedule called");
+
+	var newCronSchedule = req.body.cron_schedule;
+	if(D) console.log("newCronSchedule:" + newCronSchedule);
+
+	if(null === cronControl)
+	{
+		if(D) console.log("create new CronControl instance");
+		cronControl = new CronControl();
+	}
+
+	// cronControl.setSchedule(newCronSchedule);
+	// startCronJob(sendDbRecipe);
+	startCronJob(newCronSchedule);
+
+	res.redirect("/");
+	//res.render('index', { title: 'Express' });
 };
 
 function onRecipeSearchResult(err, docs)
@@ -139,6 +158,14 @@ function onRecipeSearchResult(err, docs)
 
 }
 
+function sendDbRecipe()
+{
+	if(D) console.log(TAG + "sendDbRecipe called");
+	recipeDbModel = new RecipeDbModel();
+	recipeDbModel.connect();
+	recipeDbModel.getNextRecipe(onRecipeSearchResult);
+}
+
 function sendGCMMessage(title_string, content_string, url_string)
 {
 	if(D) console.log(TAG + "sendGCMMessage called");
@@ -151,6 +178,12 @@ function sendGCMMessage(title_string, content_string, url_string)
 	gcmControl.send(title_string, content_string, url_string);
 }
 
+function onCallback()
+{
+	console.log("onCallback");
+
+}
+
 function _init()
 {
 	if(D) console.log(TAG + "_init");
@@ -159,13 +192,24 @@ function _init()
 exports.startCron = function()
 {
 	console.log(TAG + "startCron called");
+	//startCronJob();
+};
+
+function startCronJob(cronScheduleString)
+{
+
+	// Stop old job
+	if(null !== cronControl) cronControl.stopJob();
 
 	time = new Time.Date();
 	console.log("time.toString():" + time.toString());
 
-	var cronSchedule = "10 9 * * *";  // 9 a.m. everyday
+	var cronSchedule = cronScheduleString;
+	if(undefined === cronSchedule) cronSchedule = "10 9 * * *";  // 9 a.m. everyday
+
 	// var cronSchedule = "* * * * * *";  // every seconds
-	var cronControl = new CronControl();
-	//cronControl.setSchedule(cronSchedule);
-	cronControl.startJob(sendGCMMessage);
-};
+	cronControl = new CronControl();
+	cronControl.setSchedule(cronSchedule);
+	cronControl.startJob(sendDbRecipe);
+	// cronControl.startJob(onCallback);
+}
